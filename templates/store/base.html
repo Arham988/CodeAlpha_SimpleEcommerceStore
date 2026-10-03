@@ -1,0 +1,91 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}ShopAlpha - Simple E-Commerce Store{% endblock %}</title>
+    <!-- Custom Pure CSS -->
+    <link rel="stylesheet" href="{% static 'store/css/style.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <header class="site-navbar">
+        <div class="container nav-container">
+            <a href="{% url 'store:home' %}" class="nav-brand">
+                ShopAlpha <span class="brand-badge">STORE</span>
+            </a>
+
+            <nav class="nav-menu">
+                <a href="{% url 'store:home' %}" class="nav-link">Home</a>
+                <a href="{% url 'store:home' %}#featured-products" class="nav-link">Products</a>
+                <a href="/admin/" target="_blank" class="nav-link">Admin Portal</a>
+            </nav>
+
+            <div class="nav-actions">
+                <a href="{% url 'store:cart_detail' %}" class="cart-btn" title="View your shopping cart">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="8" cy="21" r="1"></circle>
+                        <circle cx="19" cy="21" r="1"></circle>
+                        <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+                    </svg>
+                    Cart
+                    <span class="cart-badge">{{ cart_count }}</span>
+                </a>
+
+                <div class="auth-links">
+                    {% if user.is_authenticated %}
+                        <span class="welcome-user">Welcome, <strong>{{ user.username }}</strong></span>
+                        <a href="{% url 'store:logout' %}" class="btn-logout">Logout</a>
+                    {% else %}
+                        <a href="{% url 'store:login' %}" class="btn-login">Login</a>
+                        <a href="{% url 'store:register' %}" class="btn-register">Register</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Messages Notification Alerts -->
+    {% if messages %}
+    <aside class="messages-container container" aria-label="Notifications">
+        {% for message in messages %}
+        <div class="alert-banner alert-{{ message.tags }}">
+            <span>{{ message }}</span>
+        </div>
+        {% endfor %}
+    </aside>
+    {% endif %}
+
+    <!-- Main Content Area -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div>
+                    <div class="footer-brand">ShopAlpha <span>Store</span></div>
+                    <p class="footer-tagline">CodeAlpha Full Stack Web Development Internship &bull; Task 1</p>
+                </div>
+                <div class="footer-nav">
+                    <a href="{% url 'store:home' %}">Storefront</a>
+                    <a href="{% url 'store:home' %}#featured-products">Catalog</a>
+                    <a href="/admin/">Django Admin</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 ShopAlpha. Built with Python, Django, SQLite, and Pure HTML/CSS/JavaScript.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom Pure Vanilla JavaScript -->
+    <script src="{% static 'store/js/script.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

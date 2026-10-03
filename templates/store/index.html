@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block title %}Home | CodeAlpha E-Commerce Store{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="container hero-container">
+        <h1>Welcome to ShopAlpha</h1>
+        <p>Your clean, responsive e-commerce destination built with Django and pure HTML/CSS/JavaScript.</p>
+        <div class="status-badge">
+            <span class="badge-dot"></span> Django Project Setup Verified Successfully
+        </div>
+    </div>
+</section>
+
+<section class="setup-info-section" id="products">
+    <div class="container">
+        <div class="card">
+            <h2>Initial Setup Status</h2>
+            <ul class="setup-checklist">
+                <li><span class="check">&#10003;</span> Python Virtual Environment Active</li>
+                <li><span class="check">&#10003;</span> Django 6.1.1 Framework Configured</li>
+                <li><span class="check">&#10003;</span> SQLite Database Connected</li>
+                <li><span class="check">&#10003;</span> Template Inheritance & Static Asset Pipeline Operational</li>
+                <li><span class="check">&#10003;</span> Store App Registered & URL Routing Established</li>
+            </ul>
+            <p class="ready-note">Ready for next phase: Product Catalog & Database Models.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}

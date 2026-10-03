@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}CodeAlpha E-Commerce Store{% endblock %}</title>
+    <!-- Custom Pure CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-container">
+            <a href="{% url 'store:index' %}" class="logo">ShopAlpha</a>
+            <nav class="main-nav">
+                <a href="{% url 'store:index' %}">Home</a>
+                <a href="#products">Products</a>
+                <a href="#cart" class="cart-link">Cart (0)</a>
+                <a href="#login" class="btn-auth">Login</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-container">
+            <p>&copy; 2026 ShopAlpha - CodeAlpha Full Stack Development Internship Task 1</p>
+        </div>
+    </footer>
+
+    <!-- Custom Vanilla JavaScript -->
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

@@ -1,0 +1,147 @@
+{% extends "store/base.html" %}
+
+{% block title %}{{ product.name }} | ShopAlpha{% endblock %}
+
+{% block content %}
+<div class="product-detail-container">
+    <div class="container">
+        <!-- Breadcrumb Navigation -->
+        <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+            <a href="{% url 'store:home' %}">Home</a>
+            <span class="breadcrumb-separator">/</span>
+            <a href="{% url 'store:home' %}#featured-products">Products</a>
+            <span class="breadcrumb-separator">/</span>
+            <span class="breadcrumb-current">{{ product.name }}</span>
+        </nav>
+
+        <!-- Back Button -->
+        <div class="back-link-wrapper">
+            <a href="{% url 'store:home' %}" class="btn-back">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+                Back to Products / Continue Shopping
+            </a>
+        </div>
+
+        <!-- Product Details Two-Column Layout -->
+        <div class="detail-grid">
+            <!-- Left: Large Product Image -->
+            <div class="detail-gallery">
+                <div class="detail-image-card">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" alt="{{ product.name }}" class="detail-main-image">
+                    {% else %}
+                        <div class="detail-placeholder">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                <polyline points="21 15 16 10 5 21"></polyline>
+                            </svg>
+                            <span>No Image Available for this Product</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Right: Product Information & Purchase Controls -->
+            <div class="detail-info">
+                <!-- Stock Status Tag -->
+                <div class="detail-badge-row">
+                    {% if product.stock > 0 %}
+                        <span class="stock-pill stock-pill-in">
+                            <span class="stock-indicator"></span> Available &mdash; {{ product.stock }} in stock
+                        </span>
+                    {% else %}
+                        <span class="stock-pill stock-pill-out">
+                            <span class="stock-indicator"></span> Out of stock
+                        </span>
+                    {% endif %}
+                    <span class="product-id-tag">SKU: ALPHA-{{ product.id }}</span>
+                </div>
+
+                <h1 class="detail-title">{{ product.name }}</h1>
+
+                <!-- Price Box -->
+                <div class="detail-price-box">
+                    <span class="detail-price-label">Price:</span>
+                    <span class="detail-price">${{ product.price }}</span>
+                    <span class="tax-note">Taxes included</span>
+                </div>
+
+                <!-- Product Full Description -->
+                <div class="detail-description-section">
+                    <h3>About this product</h3>
+                    <div class="description-text">
+                        {% if product.description %}
+                            <p>{{ product.description|linebreaksbr }}</p>
+                        {% else %}
+                            <p class="text-muted"><em>No detailed description provided for this item.</em></p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Purchase Section (Quantity + Cart Placeholder) -->
+                <div class="detail-purchase-panel">
+                    <form method="post" action="{% url 'store:cart_add' product.id %}" class="purchase-form">
+                        {% csrf_token %}
+                        <div class="quantity-control-group">
+                            <label for="quantity-input" class="quantity-label">Quantity:</label>
+                            <div class="quantity-selector">
+                                <button type="button" 
+                                        class="qty-btn qty-decrease" 
+                                        aria-label="Decrease quantity"
+                                        {% if product.stock == 0 %}disabled{% endif %}>&minus;</button>
+                                <input type="number" 
+                                       id="quantity-input" 
+                                       name="quantity" 
+                                       value="1" 
+                                       min="1" 
+                                       max="{{ product.stock }}" 
+                                       class="qty-input"
+                                       {% if product.stock == 0 %}disabled value="0"{% endif %}>
+                                <button type="button" 
+                                        class="qty-btn qty-increase" 
+                                        aria-label="Increase quantity"
+                                        {% if product.stock == 0 %}disabled{% endif %}>&plus;</button>
+                            </div>
+                            {% if product.stock > 0 %}
+                                <span class="qty-max-hint">(Max: {{ product.stock }})</span>
+                            {% endif %}
+                        </div>
+
+                        <div class="purchase-actions">
+                            <button type="submit" 
+                                    class="btn-add-cart btn-add-cart-large" 
+                                    {% if product.stock == 0 %}disabled{% endif %}>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <circle cx="8" cy="21" r="1"></circle>
+                                    <circle cx="19" cy="21" r="1"></circle>
+                                    <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
+                                </svg>
+                                {% if product.stock > 0 %}
+                                    Add to Cart
+                                {% else %}
+                                    Sold Out
+                                {% endif %}
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="shopping-perks">
+                        <div class="perk-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="3" width="15" height="13"></rect><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"></polygon><circle cx="5.5" cy="18.5" r="2.5"></circle><circle cx="18.5" cy="18.5" r="2.5"></circle></svg>
+                            <span>Free shipping on all standard orders</span>
+                        </div>
+                        <div class="perk-item">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                            <span>100% Secure Checkout Guarantee</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
